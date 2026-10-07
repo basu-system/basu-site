@@ -175,6 +175,23 @@ body.editing #secs>[data-sec].sec-off{display:block;opacity:.38}
 .secbar button{font:600 13.5px var(--font);border:0;border-radius:8px;padding:6px 11px;cursor:pointer;background:rgba(255,255,255,.16);color:inherit}
 .secbar button:disabled{opacity:.3;cursor:default}
 .secbar .st{font-weight:500;opacity:.8}
+
+.modal{position:fixed;inset:0;z-index:80;background:rgba(10,14,18,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.modal[hidden]{display:none}
+.mbox{background:var(--panel);color:var(--ink);border-radius:16px;padding:22px;width:100%;max-width:440px;max-height:85vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.mbox.wide{max-width:680px}
+.mbox h3{margin:0 0 8px}
+.mbox p{font-size:15px}
+.mbox input{width:100%;font:500 15px var(--font);padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--bg);color:var(--ink)}
+.mbtn{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.mbtn button{font:600 14.5px var(--font);border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--chip);color:var(--ink)}
+.mbtn button.pri{background:var(--basu);color:#fff}
+.mbtn button:disabled{opacity:.5;cursor:default}
+.mmsg{color:var(--basu);font-size:14px;min-height:1em;margin:8px 0 0}
+.dItem{border-top:1px solid var(--rule);padding:10px 0;font-size:14.5px;line-height:1.6}
+.dItem .w{color:var(--muted);font-size:13px;margin-bottom:2px}
+.dItem del{color:var(--muted);text-decoration:line-through;white-space:pre-line;display:block}
+.dItem ins{text-decoration:none;font-weight:600;white-space:pre-line;display:block}
 </style>
 </head>
 <body>
@@ -311,11 +328,31 @@ body.editing #secs>[data-sec].sec-off{display:block;opacity:.38}
 <div class="editbar" id="editbar" role="toolbar" aria-label="문구 편집">
   <span class="msg" id="emsg">점선 친 글을 눌러 고치세요. 구역 순서는 검은 막대의 버튼으로</span>
   <label class="msg" for="nameIn">상품 이름</label><input id="nameIn" type="text">
+  <button type="button" id="eKey" title="이 기기에 저장된 열쇠 지우기">열쇠 지우기</button>
   <button type="button" id="eCancel">취소</button>
   <button type="button" class="pri" id="eSave">저장</button>
 </div>
 <button type="button" id="eOpen" style="display:none;position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;font:600 14px var(--font);border:0;border-radius:999px;padding:10px 18px;background:var(--ink);color:var(--bg);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.2)">문구 편집</button>
 
+
+<div class="modal" id="mKey" role="dialog" aria-modal="true" aria-labelledby="mKeyT" hidden>
+  <div class="mbox">
+    <h3 id="mKeyT">편집 열쇠 넣기</h3>
+    <p>이 기기에서 처음 편집할 때 한 번만 넣으면 됩니다. 열쇠는 이 브라우저에만 저장되고 방문자에게는 보이지 않습니다.</p>
+    <input id="keyIn" type="password" autocomplete="off" placeholder="github_pat_로 시작하는 열쇠" aria-label="GitHub 열쇠">
+    <p class="mmsg" id="keyMsg"></p>
+    <div class="mbtn"><button type="button" id="keyNo">취소</button><button type="button" class="pri" id="keyOk">확인</button></div>
+  </div>
+</div>
+<div class="modal" id="mDiff" role="dialog" aria-modal="true" aria-labelledby="mDiffT" hidden>
+  <div class="mbox wide">
+    <h3 id="mDiffT">이렇게 바뀝니다</h3>
+    <p class="muted" style="font-size:14.5px">확인을 누르면 공개 사이트에 1~2분 뒤 반영됩니다. 문장 속 숫자를 바꿨다면 BASU_FACTS와 맞는지 한 번 더 보세요.</p>
+    <div id="diffList"></div>
+    <p class="mmsg" id="diffMsg"></p>
+    <div class="mbtn"><button type="button" id="diffNo">더 고치기</button><button type="button" class="pri" id="diffOk">확인, 저장</button></div>
+  </div>
+</div>
 <script id="copy" type="application/json">{
  "name": "BASU-132",
  "brand_suffix": "공개 성과 기록",
@@ -416,15 +453,6 @@ body.editing #secs>[data-sec].sec-off{display:block;opacity:.38}
 <script id="app">
 
 (function(){
-/* 편집 저장용: 스크립트가 화면을 바꾸기 전, 이 페이지 원본을 확보 */
-function captureSource(){
-  const clone=document.documentElement.cloneNode(true);
-  clone.querySelectorAll('script').forEach(s=>{if(!['copy','data','livedata','app'].includes(s.id))s.remove();});
-  const head=clone.querySelector('head');[...head.children].forEach(c=>{if(!['META','TITLE','LINK','STYLE'].includes(c.tagName))c.remove();});
-  const body=clone.querySelector('body');[...body.children].forEach(c=>{if(!(c.id==='own'||c.id==='editbar'||c.id==='eOpen'||c.tagName==='SCRIPT'))c.remove();});
-  return '<!DOCTYPE html>\n'+clone.outerHTML;
-}
-const SRC=captureSource();
 const $=s=>document.querySelector(s);
 const COPY=JSON.parse($('#copy').textContent);
 const DATA=JSON.parse($('#data').textContent);
@@ -563,26 +591,75 @@ function secBars(on){document.querySelectorAll('.secbar').forEach(b=>b.remove())
 
 /* ---------- 문구 편집 (소유자만) ---------- */
 function markEditable(){document.querySelectorAll('[data-k]').forEach(e=>{e.contentEditable='plaintext-only';e.spellcheck=false;});}
-function startEdit(){document.body.classList.add('editing');secBars(true);setTimeout(drawAll,30);$('#editbar').classList.add('on');$('#eOpen').style.display='none';$('#nameIn').value=COPY.name;$('#emsg').textContent='점선 친 글을 눌러 고치세요. 구역 순서는 검은 막대의 버튼으로';markEditable();}
+function startEdit(){document.body.classList.add('editing');secBars(true);setTimeout(drawAll,30);$('#editbar').classList.add('on');$('#eOpen').style.display='none';$('#nameIn').value=COPY.name;$('#emsg').textContent='점선 친 글을 눌러 고치세요. 구역 순서는 검은 막대의 버튼으로';markEditable();if(!getKey())askKey();}
 function stopEdit(){document.body.classList.remove('editing');secBars(false);$('#editbar').classList.remove('on');$('#eOpen').style.display='';document.querySelectorAll('[data-k]').forEach(e=>e.removeAttribute('contenteditable'));}
 function collect(){const next=Object.assign({},COPY);const newName=($('#nameIn').value||COPY.name).trim();
   document.querySelectorAll('[data-k]').forEach(e=>{let v=e.innerText.replace(/\u00a0/g,' ').replace(/\n{3,}/g,'\n\n').trim();
     if(COPY[e.dataset.k]&&COPY[e.dataset.k].includes('{이름}'))v=v.split(COPY.name).join('{이름}');next[e.dataset.k]=v;});
   next.name=newName;next.layout=currentLayout();return next;}
-async function save(artifact){
-  const next=collect();const json=JSON.stringify(next,null,1).replace(/</g,'\\u003c');
-  const a=SRC.indexOf('<script id="copy" type="application/json">'),b=SRC.indexOf('<\/script>',a);
-  if(a<0||b<0){$('#emsg').textContent='저장 준비 실패: 원본을 찾지 못했습니다';return;}
-  const html=SRC.slice(0,a)+'<script id="copy" type="application/json">'+json+SRC.slice(b);
-  $('#emsg').textContent='저장 중…';$('#eSave').disabled=true;
-  try{await artifact.publish(html);Object.assign(COPY,next);$('#emsg').textContent='저장했습니다. 사이트 반영은 웹 Claude에게 "사이트 최신본"';}
-  catch(err){$('#eSave').disabled=false;$('#emsg').textContent=(err&&err.code==='conflict')?'다른 곳에서 먼저 저장돼 새로 불러옵니다':'저장하지 못했습니다'+(err&&err.code?' ('+err.code+')':'');}
-}
-(async()=>{try{if(!window.claude||!claude.use)return;const [artifact,user]=await Promise.all([claude.use('artifact'),claude.use('user')]);
-  if(!artifact)return;if(user&&user.canEdit&&!user.canEdit())return;
+/* 저장소 설정 */
+const REPO={owner:'basu-system',name:'basu-site',branch:'main',path:'copy.json'};
+const KEYNAME='basu_site_edit_key';
+const getKey=()=>{try{return localStorage.getItem(KEYNAME)||'';}catch(e){return '';}};
+const setKey=v=>{try{v?localStorage.setItem(KEYNAME,v):localStorage.removeItem(KEYNAME);}catch(e){}};
+const API='https://api.github.com/repos/'+REPO.owner+'/'+REPO.name+'/contents/'+REPO.path;
+const gh=(url,opt,key)=>fetch(url,Object.assign({headers:{'Authorization':'Bearer '+key,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}},opt||{}));
+function b64(str){const by=new TextEncoder().encode(str);let s='';for(let i=0;i<by.length;i+=0x8000)s+=String.fromCharCode.apply(null,by.subarray(i,i+0x8000));return btoa(s);}
+function showModal(id,on){$(id).hidden=!on;}
+/* 열쇠 확인: 이 저장소에 쓸 수 있는 열쇠인지 */
+async function checkKey(key){const r=await gh('https://api.github.com/repos/'+REPO.owner+'/'+REPO.name,{},key);if(!r.ok)return false;const j=await r.json();return !!(j.permissions&&j.permissions.push);}
+function askKey(){return new Promise(res=>{$('#keyIn').value='';$('#keyMsg').textContent='';showModal('#mKey',true);setTimeout(()=>$('#keyIn').focus(),30);
+  const done=v=>{showModal('#mKey',false);$('#keyOk').onclick=$('#keyNo').onclick=null;res(v);};
+  $('#keyNo').onclick=()=>done('');
+  $('#keyOk').onclick=async()=>{const k=$('#keyIn').value.trim();if(!k){$('#keyMsg').textContent='열쇠를 붙여넣어 주세요';return;}
+    $('#keyOk').disabled=true;$('#keyMsg').textContent='확인 중…';
+    try{if(await checkKey(k)){setKey(k);done(k);}else $('#keyMsg').textContent='이 열쇠로는 basu-site 저장소에 저장할 수 없습니다. 권한(Contents 읽기·쓰기)과 저장소 선택을 확인하세요.';}
+    catch(e){$('#keyMsg').textContent='연결에 실패했습니다. 인터넷 연결을 확인하세요.';}
+    $('#keyOk').disabled=false;};});}
+/* 바뀐 내용 목록 */
+const LABEL=k=>{const e=document.querySelector('[data-k="'+k+'"]');const s=e&&e.closest('[data-sec]');const sec=s?(SECNAME[s.dataset.sec]||''):'맨 위·맨 아래';return sec;};
+function diffs(a,b){const out=[];
+  if(a.name!==b.name)out.push({w:'상품 이름',o:a.name,n:b.name});
+  Object.keys(b).forEach(k=>{if(k==='name'||k==='layout')return;if((a[k]||'')!==(b[k]||''))out.push({w:LABEL(k),o:(a[k]||'').split('{이름}').join(a.name),n:(b[k]||'').split('{이름}').join(b.name)});});
+  const la=a.layout||{},lb=b.layout||{},nm=x=>(x||[]).map(k=>SECNAME[k]||k).join(' → ');
+  if(JSON.stringify(la.order||[])!==JSON.stringify(lb.order||[]))out.push({w:'구역 순서',o:nm(la.order),n:nm(lb.order)});
+  const ha=(la.hidden||[]).slice().sort().join(','),hb=(lb.hidden||[]).slice().sort().join(',');
+  if(ha!==hb)out.push({w:'숨긴 구역',o:(la.hidden||[]).map(k=>SECNAME[k]).join(', ')||'없음',n:(lb.hidden||[]).map(k=>SECNAME[k]).join(', ')||'없음'});
+  return out;}
+async function pushCopy(next,key){
+  const body=JSON.stringify(next,null,1)+'\n';
+  let sha=null;const g=await gh(API+'?ref='+REPO.branch,{cache:'no-store'},key);
+  if(g.status===401||g.status===403)throw {code:'key'};
+  if(g.ok)sha=(await g.json()).sha;else if(g.status!==404)throw {code:'read'+g.status};
+  let who=null;try{const u=await gh('https://api.github.com/user',{},key);if(u.ok){const j=await u.json();who={name:j.login,email:j.id+'+'+j.login+'@users.noreply.github.com'};}}catch(e){}
+  const now=new Date(Date.now()+9*36e5).toISOString().slice(0,16).replace('T',' ');
+  const payload={message:'copy: 문구 수정 '+now,content:b64(body),branch:REPO.branch};if(sha)payload.sha=sha;if(who){payload.committer=who;payload.author=who;}
+  const p=await gh(API,{method:'PUT',body:JSON.stringify(payload)},key);
+  if(p.status===409)throw {code:'conflict'};if(p.status===401||p.status===403)throw {code:'key'};if(!p.ok)throw {code:'write'+p.status};}
+async function save(){
+  let key=getKey();if(!key){key=await askKey();if(!key)return;}
+  const next=collect();const ds=diffs(COPY,next);
+  if(!ds.length){$('#emsg').textContent='바뀐 내용이 없습니다';return;}
+  const cut=s=>s.length>220?s.slice(0,220)+'…':s;
+  $('#diffList').innerHTML=ds.map(d=>`<div class="dItem"><div class="w">${esc(d.w)}</div><del>${esc(cut(d.o))}</del><ins>${esc(cut(d.n))}</ins></div>`).join('');
+  $('#diffMsg').textContent='';showModal('#mDiff',true);
+  $('#diffNo').onclick=()=>showModal('#mDiff',false);
+  $('#diffOk').onclick=async()=>{$('#diffOk').disabled=true;$('#diffMsg').textContent='저장 중…';
+    try{await pushCopy(next,key);Object.keys(COPY).forEach(k=>delete COPY[k]);Object.assign(COPY,next);showModal('#mDiff',false);
+      $('#emsg').textContent='저장했습니다. 1~2분 뒤 사이트에 반영됩니다';}
+    catch(err){const c=err&&err.code;
+      if(c==='key'){setKey('');$('#diffMsg').textContent='열쇠가 만료됐거나 권한이 없습니다. 다시 저장을 누르면 새 열쇠를 넣을 수 있습니다.';}
+      else if(c==='conflict')$('#diffMsg').textContent='방금 다른 곳에서 먼저 저장됐습니다. 페이지를 새로고침한 뒤 다시 고쳐 주세요.';
+      else $('#diffMsg').textContent='저장하지 못했습니다('+(c||'연결 오류')+'). 잠시 뒤 다시 시도하세요.';}
+    $('#diffOk').disabled=false;};}
+/* 편집 모드는 주소 뒤에 ?edit 가 있을 때만 */
+if(/[?&]edit(=|&|$)/.test(location.search)){
   $('#eOpen').style.display='';$('#eOpen').addEventListener('click',startEdit);
   $('#eCancel').addEventListener('click',()=>{stopEdit();applyLayout(COPY.layout);applyCopy();renderStatic();calc();drawUW();if(LV)renderLive(LV,LVsnap);});
-  $('#eSave').addEventListener('click',()=>save(artifact));}catch(e){}})();
+  $('#eSave').addEventListener('click',save);
+  $('#eKey').addEventListener('click',()=>{setKey('');$('#emsg').textContent='이 기기의 열쇠를 지웠습니다';});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){showModal('#mKey',false);showModal('#mDiff',false);}});
+}
 
 
 /* ---------- 실계좌 (live.json, 실패하면 저장본) ---------- */
@@ -642,6 +719,8 @@ fetch('live.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();
 
 function drawAll(){drawUW();drawEQ();drawLiveDD();}
 applyLayout(COPY.layout);applyCopy();renderStatic();drawAll();setCap(1e7);filt();
+fetch('copy.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).then(c=>{if(!c||!c.name)return;
+  Object.keys(COPY).forEach(k=>delete COPY[k]);Object.assign(COPY,c);applyLayout(COPY.layout);applyCopy();renderStatic();calc();drawAll();if(LV)renderLive(LV,LVsnap);}).catch(()=>{});
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawAll,120);});
 })();
 
