@@ -103,7 +103,7 @@
  "eq_all": "비트코인·7종목도 같이 보기",
  "eq_note_lin": "처음 넣은 돈이 몇 배가 됐는지",
  "eq_note_log": "처음 넣은 돈이 몇 배가 됐는지(눈금은 2배씩)",
- "cagr_label": "그렇다고 수익률이 형편없을까요?<br>{이름}의 <b><span class=\"c-def\"><span class=\"c-green\">연평균수익률(CAGR)</span></span></b> 입니다.",
+ "cagr_label": "<span class=\"s-lg\"><span class=\"c-def\">그렇다고 수익률이 형편없을까요?</span></span><br>{이름}의 <b><span class=\"c-def\"><span class=\"c-green\">연평균수익률(CAGR)</span></span></b> 입니다.",
  "cagr_s1": "8년 8개월, 원금이 이렇게 불어났습니다",
  "cagr_s2": "원금이 두 배가 되는 데 걸린 평균 기간",
  "cagr_s3": "1,000만 원을 넣었다면 8년 8개월 뒤",
