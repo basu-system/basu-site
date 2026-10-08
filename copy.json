@@ -15,7 +15,7 @@
  "r3t": "수익률은 눈속임이 가능하다",
  "r3p": "잘 됐던 몇 달만 잘라서 보여주면 됩니다.\n\n하지만 최대 낙폭은 전체 기간에서 가장 나빴던 순간이라 숨기기 어렵습니다.",
  "s1h2": "비트코인이 −87% 떨어지는 동안,\n{이름}의 최대 낙폭은 −9.78%였습니다",
- "s1lead": "<span class=\"s-sm\"><span class=\"s-sm\"><span class=\"s-lg\"><span class=\"s-sm\"><span class=\"c-gray\">관측기간 : 약 8년8개월 (</span></span></span></span></span>2017년9월~2026년6월)",
+ "s1lead": "<span class=\"s-sm\"><span class=\"s-sm\"><span class=\"s-lg\"><span class=\"s-sm\"><span class=\"c-gray\">관측기간 : 약 8년8개월 (</span></span></span></span></span><span class=\"s-sm\"><span class=\"c-gray\">2017년9월~2026년6월</span></span>)",
  "cmp_me_sub": "자동 규칙대로 사고 팔았음",
  "cmp_btc": "비트코인",
  "cmp_btc_sub": "사서 그냥 들고 있었음",
