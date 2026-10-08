@@ -577,7 +577,7 @@ body.editing .fmtbar{display:flex}
  "cagr_label": "{이름}의 연 평균 수익률",
  "cagr_s1": "8년 8개월 동안 원금이 불어난 배수",
  "cagr_s2": "원금이 두 배가 되는 데 걸린 평균 기간",
- "cagr_s3": "1,000만 원을 넣었다면 8년 8개월 뒤",
+ "cagr_s3": "1억 원을 넣었다면 8년 8개월 뒤",
  "cagr_foot": "업비트 원화 7종목, 4시간봉, 왕복 수수료 0.1% 포함, 2017년 9월부터 2026년 6월까지의 검증 기록입니다. 과거 기록이며 미래 수익을 약속하지 않습니다.",
  "bear_note": "올해(2026년) 숫자는 같은 규칙의 검증 엔진으로 매일 다시 계산한 값입니다. 실제 계좌 기록은 위 실계좌 구역에서 볼 수 있습니다."
 }</script>
@@ -661,7 +661,7 @@ const FIN=D[D.length-1].eq/D[0].eq,DBL=Math.log(2)/Math.log(1+S.cagr/100);
 window.cagrStats=function(){$('#cagrStats').innerHTML=
   `<div><b class="num">${FIN.toFixed(1)}배</b>${K('cagr_s1')}</div>`+
   `<div><b class="num">약 ${DBL.toFixed(1)}년</b>${K('cagr_s2')}</div>`+
-  `<div><b class="num">${krw(1e7*FIN)}</b>${K('cagr_s3')}</div>`;};cagrStats();
+  `<div><b class="num">${krw(1e8*FIN)}</b>${K('cagr_s3')}</div>`;};cagrStats();
 function cagrSet(e){$('#cagrBig').textContent='+'+(S.cagr*e).toFixed(2)+'%';}
 cagrSet(1);onView($('#cagrBlock'),()=>{cagrSet(0);countUp(1300,cagrSet);});
 /* 그래프 공통 */
