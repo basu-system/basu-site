@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-13 02:02:16",
+ "generated_at": "2026-10-13 09:02:24",
  "asof": "2026-10-07 21:00:00",
  "start_date": "2026-06-19",
  "capital_history": [
@@ -933,8 +933,8 @@
  "channel_url": "https://t.me/basu_proof",
  "ytd": {
   "year": 2026,
-  "asof": "2026-10-12",
+  "asof": "2026-10-13",
   "basu_pct": 3.35,
-  "btc_pct": -11.48
+  "btc_pct": -13.43
  }
 }
