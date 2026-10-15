@@ -679,7 +679,11 @@ function autoVals(){const S=DATA.summary,D=DATA.daily,Y=YTD();return {
   '{연수익률}':pct(S.cagr),'{최대낙폭}':pct(S.max_dd),'{꼬리낙폭}':pct(S.tail_dd_99),'{비트코인낙폭}':pct(MDD.btc,0),
   '{검증기간}':spanTxt(),'{검증시작}':ymTxt(D[0].d),'{검증끝}':ymTxt(D[D.length-1].d),'{거래수}':S.trades.toLocaleString('ko-KR'),
   '{대기비율}':Math.round(S.cash_bar_ratio)+'%','{평균노출}':S.avg_exposure.toFixed(2)+'%','{계산기한도}':String(HMAX),'{분기}':DATA.meta.quarter_text||'',
-  '{올해_BASU}':pct(Y.s6,1),'{올해_BTC}':pct(Y.btc,1),'{올해_기준일}':ymd(Y.asof)};}
+  '{올해_BASU}':pct(Y.s6,1),'{올해_BTC}':pct(Y.btc,1),'{올해_기준일}':ymd(Y.asof),
+  /* 월별 비교값: 사이트 데이터에 있을 때만 바뀜 */
+  ...(S.month_loss_pct!=null?{'{손실달비율}':S.month_loss_pct.toFixed(1)+'%'}:{}),
+  ...(S.month_top10_share_pct!=null?{'{상위달비중}':S.month_top10_share_pct.toFixed(1)+'%'}:{}),
+  ...(S.month_top10_n!=null?{'{상위달수}':String(S.month_top10_n)}:{})};}
 function tokens(s){if(s.indexOf('{')<0)return s;const V=autoVals();Object.keys(V).forEach(k=>{if(s.indexOf(k)>=0)s=s.split(k).join(V[k]);});return s;}
 const editing=()=>document.body.classList.contains('editing');
 function Hn(k,raw){let h=toHTML((COPY[k]||'').split('{이름}').join(COPY.name));return raw?h:tokens(h);}
