@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-15 09:03:29",
+ "generated_at": "2026-10-15 16:17:53",
  "asof": "2026-10-07 21:00:00",
  "start_date": "2026-06-19",
  "capital_history": [
@@ -940,6 +940,73 @@
    "eq": 1.045412,
    "eq_min": 1.045412,
    "eq_max": 1.045412
+  }
+ ],
+ "monthly": [
+  {
+   "month": "2026-06",
+   "label": "6월(19일~)",
+   "from": "2026-06-19",
+   "to": "2026-06-30",
+   "in_progress": false,
+   "trades": 1,
+   "wins": 0,
+   "losses": 1,
+   "pnl": -13942,
+   "ret_pct": -0.1403,
+   "cum_pct": -0.1403
+  },
+  {
+   "month": "2026-07",
+   "label": "7월",
+   "from": "2026-07-01",
+   "to": "2026-07-31",
+   "in_progress": false,
+   "trades": 13,
+   "wins": 5,
+   "losses": 8,
+   "pnl": 9042,
+   "ret_pct": 0.0911,
+   "cum_pct": -0.0493
+  },
+  {
+   "month": "2026-08",
+   "label": "8월",
+   "from": "2026-08-01",
+   "to": "2026-08-31",
+   "in_progress": false,
+   "trades": 12,
+   "wins": 4,
+   "losses": 8,
+   "pnl": 575516,
+   "ret_pct": 5.7959,
+   "cum_pct": 5.7437
+  },
+  {
+   "month": "2026-09",
+   "label": "9월",
+   "from": "2026-09-01",
+   "to": "2026-09-30",
+   "in_progress": false,
+   "trades": 16,
+   "wins": 6,
+   "losses": 10,
+   "pnl": -18248,
+   "ret_pct": -0.1737,
+   "cum_pct": 5.56
+  },
+  {
+   "month": "2026-10",
+   "label": "10월(진행 중)",
+   "from": "2026-10-01",
+   "to": null,
+   "in_progress": true,
+   "trades": 6,
+   "wins": 0,
+   "losses": 6,
+   "pnl": -101221,
+   "ret_pct": -0.9651,
+   "cum_pct": 4.5412
   }
  ],
  "channel_url": "https://t.me/basu_proof",
