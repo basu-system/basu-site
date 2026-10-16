@@ -176,6 +176,9 @@ body.tab-mon footer .mf{display:block}
 
 .plotbox{background:var(--plot);border:1px solid #CBD3DC;border-radius:12px;padding:14px 12px 10px;color:#141C24}
 .plotbox .legend{color:#56636F}
+/* 말풍선: 그래프 바탕(흰색)과 상관없이 늘 짙은 바탕 + 밝은 글씨 (어두운 모드에서 글씨가 안 보이던 문제) */
+.chart .tip{background:#1B232C;color:#F4F6F8;border-color:#1B232C;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.chart .tip b{color:#fff}
 [data-k]{white-space:pre-line}
 body.editing [data-k]{outline:1.5px dashed var(--basu);outline-offset:3px;border-radius:3px;cursor:text}
 body.editing [data-k]:focus{outline-style:solid;background:rgba(224,49,43,.06)}
