@@ -160,14 +160,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 }
 /* 검은 블록 안의 '기본색' 글자는 밝게 (밝은 화면 모드에서 안 보이던 문제) */
 .cagr .c-def,.impact .c-def{color:#F4F6F8}
-body.tab-mon footer .bt{display:none}
-.subtg{margin:34px 0 0}
-.subtg .seg{margin:0}
-.subtg .seg button{font-size:14.5px;padding:8px 16px}
-.btwarn{background:var(--chip);border-radius:12px;padding:12px 14px;font-size:15px;margin:0 0 18px;color:var(--ink)}
-.btwarn b{color:var(--basu)}
-.ychips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;margin:22px 0 10px;-webkit-overflow-scrolling:touch}
+#vMon h2.livehd{margin-top:80px;padding-top:28px;border-top:1px solid var(--rule)}
+#btWrap details.trades summary{font-size:15px;padding:10px 0}
+body.tab-mon footer .mf{display:none!important}
+.ychips{display:flex;flex-wrap:wrap;gap:6px;padding:2px 0 6px;margin:26px 0 10px;-webkit-overflow-scrolling:touch}
 .ychips button{flex:0 0 auto;border:1px solid var(--rule);background:var(--panel);color:var(--ink);font:600 14px var(--font);border-radius:999px;padding:6px 13px;cursor:pointer}
+@media (max-width:560px){.ychips button{font-size:13px;padding:5px 10px}}
 .ychips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .bthead{color:#141C24;font-size:17px;margin:2px 4px 0}
 .btsub{color:#56636F;font-size:13.5px;margin:2px 4px 6px;line-height:1.55}
@@ -481,14 +479,30 @@ body.editing .fmtbar{display:flex}
 </div>
 
 <div id="vMon" role="tabpanel" aria-labelledby="tabMon" hidden>
-  <div class="subtg" id="subTg"><div class="seg" role="group" aria-label="기록 고르기">
-    <button type="button" data-sub="live" aria-pressed="true">실계좌 2026.06~</button>
-    <button type="button" data-sub="bt" aria-pressed="false" id="subBtBtn">검증 기록 <span id="subBtYrs"></span></button>
-  </div></div>
-  <h2 data-k="monthly_h2" id="hLive"></h2>
-  <h2 data-k="bt_h2" id="hBt" hidden></h2>
+  <h2 data-k="mon_h2"></h2>
   <p class="lead" data-k="monthly_lead"></p>
+  <div id="btWrap">
+    <div class="ychips" id="btChips" role="group" aria-label="연도 고르기"></div>
+    <div class="plotbox">
+      <h3 class="bthead" id="btMonT"></h3>
+      <p class="btsub num" id="btMonCount"></p>
+      <div class="chart bars" id="btMon"><div class="tip"></div></div>
+      <div class="legend" id="btLeg"><span><i style="background:#E0312B"></i>이익 난 달</span><span><i style="background:#2D6FD6"></i>손실 난 달</span><span><i style="background:#C9D1DA"></i>거래 없는 달</span></div>
+    </div>
+    <p class="note" style="margin-top:10px" data-k="mon_live_note"></p>
+    <div class="plotbox btblock">
+      <h3 class="bthead">전체 <span id="btN"></span>개월을 한 줄로</h3>
+      <p class="btsub" data-k="bt_strip_note"></p>
+      <div class="chart bars" id="btStrip"><div class="tip"></div></div>
+      <div class="legend"><span><i style="background:#B3241F"></i>가장 좋았던 달</span><span><i style="background:#F2A39E"></i>그 밖의 이익 난 달</span><span><i style="background:#2D6FD6"></i>손실 난 달</span></div>
+    </div>
+    <details class="trades"><summary id="btTblSum"></summary>
+      <div class="tbl mtbl"><table class="num"><thead id="btTh"></thead><tbody id="btTb"></tbody></table></div>
+    </details>
+    <p class="note" style="margin-top:8px" data-k="bt_note"></p>
+  </div>
   <div id="vLive">
+  <h2 data-k="monthly_h2" class="livehd"></h2>
   <div id="monEmpty" class="alert info" hidden><span data-k="monthly_empty"></span></div>
   <div id="monBody">
     <p class="mcount num" id="monCount"></p>
@@ -502,31 +516,6 @@ body.editing .fmtbar{display:flex}
       <tbody id="monTb"></tbody></table></div>
     <p class="note" style="margin-top:14px" data-k="monthly_note"></p>
   </div>
-  </div>
-  <div id="vBt" hidden>
-    <div class="btwarn" data-k="bt_warn"></div>
-    <div class="plotbox">
-      <h3 class="bthead">연도별 수익률</h3>
-      <p class="btsub">막대를 누르면 그 해를 달마다 볼 수 있습니다.</p>
-      <div class="chart bars" id="btYear"><div class="tip"></div></div>
-    </div>
-    <div class="ychips" id="btChips" role="group" aria-label="연도 고르기"></div>
-    <div class="plotbox">
-      <h3 class="bthead" id="btMonT"></h3>
-      <p class="btsub num" id="btMonCount"></p>
-      <div class="chart bars" id="btMon"><div class="tip"></div></div>
-      <div class="legend"><span><i style="background:#E0312B"></i>이익 난 달</span><span><i style="background:#2D6FD6"></i>손실 난 달</span><span><i style="background:#C9D1DA"></i>거래 없는 달</span></div>
-    </div>
-    <div class="tbl mtbl"><table class="num">
-      <thead><tr><th>월</th><th class="rt">거래</th><th class="rt hw">이김·짐</th><th class="rt">월 수익률</th></tr></thead>
-      <tbody id="btTb"></tbody></table></div>
-    <div class="plotbox btblock">
-      <h3 class="bthead">전체 <span id="btN"></span>개월을 한 줄로</h3>
-      <p class="btsub" data-k="bt_strip_note"></p>
-      <div class="chart bars" id="btStrip"><div class="tip"></div></div>
-      <div class="legend"><span><i style="background:#B3241F"></i>가장 좋았던 달</span><span><i style="background:#F2A39E"></i>그 밖의 이익 난 달</span><span><i style="background:#2D6FD6"></i>손실 난 달</span></div>
-    </div>
-    <p class="note" style="margin-top:14px" data-k="bt_note"></p>
   </div>
 </div>
 
@@ -688,8 +677,8 @@ body.editing .fmtbar{display:flex}
  "monthly_note": "청산일 기준, 한국시간, 수수료를 뺀 값입니다. 들고 있는 코인의 평가 손익은 빠져 있고, 텔레그램 공개 채널에 올라간 거래만 셉니다. 끝난 달의 성적은 매월 1일 텔레그램 공개 채널에도 자동으로 올라갑니다.",
  "monthly_empty": "월별 기록을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.",
  "monthly_foot": "실제 계좌 기록이지만 미래 수익을 약속하지 않습니다. 원금 손실이 날 수 있습니다.",
- "bt_h2": "같은 규칙으로 {검증기간}을 돌린 검증 기록",
- "bt_warn": "<b>실계좌 기록이 아닙니다.</b> 실계좌와 같은 규칙·같은 수수료로 검증 엔진이 계산한 과거 기록입니다.",
+ "mon_h2": "{검증기간}을 달마다 끊어 보면",
+ "mon_live_note": "실제로 돈을 넣고 돌리기 시작한 기간은 2026년 6월부터입니다.",
  "bt_strip_note": "막대 하나가 한 달입니다. 진한 빨강은 가장 좋았던 {상위달수}개월로, {검증기간} 동안 번 수익의 {상위달비중}가 이 달들에서 나왔습니다.",
  "bt_note": "달마다의 성적은 청산일 기준(한국시간), 연도 성적은 연말 잔고 기준입니다. 그래서 한 해의 달별 값을 모두 합친 것과 연도 값이 조금 다를 수 있습니다. 과거 기록이며 미래 수익을 약속하지 않습니다."
 }</script>
@@ -1090,36 +1079,38 @@ function barChart(box,items,o){o=o||{};if(!box||!box.clientWidth)return;const W=
 
 /* ---------- 검증 기록 월별 (사이트 데이터의 monthly_bt, BASU_FACTS 월별 비교값과 같은 정의) ---------- */
 const BT=Array.isArray(DATA.monthly_bt)?DATA.monthly_bt:null;
-let SUB='live',BTY=null;
+let BTY=null; /* 숫자 = 그 해 달마다, 'all' = 연도별 */
 function btYears(){return DATA.yearly.map(y=>y.year);}
 function btMonthsOf(y){return BT.filter(r=>+r.m.slice(0,4)===y);}
 function btCls(r){return !r.n?'none':(r.ret>0?'gain':'loss');}
 function partTxtY(y){const d0=DATA.daily[0].d,d1=DATA.daily[DATA.daily.length-1].d;if(y===+d0.slice(0,4))return (+d0.slice(5,7))+'월부터';if(y===+d1.slice(0,4))return (+d1.slice(5,7))+'월까지';return '';}
 function renderBt(){if(!BT)return;const ys=btYears();if(BTY==null)BTY=ys[ys.length-1];
-  $('#btChips').innerHTML=ys.map(y=>`<button type="button" data-y="${y}" aria-pressed="${y===BTY}">${y}</button>`).join('');
-  $('#btChips').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{BTY=+b.dataset.y;renderBt();}));
-  const M=btMonthsOf(BTY),up=M.filter(r=>r.n&&r.ret>0).length,dn=M.filter(r=>r.n&&r.ret<=0).length,fl=M.filter(r=>!r.n).length;
-  const pt=partTxtY(BTY);$('#btMonT').textContent=BTY+'년 달마다'+(pt?' ('+pt+')':'');
-  $('#btMonCount').textContent=`이익 난 달 ${up} · 손실 난 달 ${dn}`+(fl?` · 거래 없는 달 ${fl}`:'');
-  $('#btTb').innerHTML=M.map(r=>{const c=btCls(r);return `<tr><td>${+r.m.slice(5,7)}월</td><td class="rt">${r.n}건</td><td class="rt hw">${r.w}·${r.l}</td><td class="rt ${c==='none'?'':c}">${r.n?pct(r.ret):'거래 없음'}</td></tr>`;}).join('');
+  $('#btChips').innerHTML=ys.map(y=>`<button type="button" data-y="${y}" aria-pressed="${y===BTY}">${y}</button>`).join('')+`<button type="button" data-y="all" aria-pressed="${BTY==='all'}">연도별</button>`;
+  $('#btChips').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{BTY=b.dataset.y==='all'?'all':+b.dataset.y;renderBt();}));
+  if(BTY==='all'){const Y=DATA.yearly,up=Y.filter(y=>y.s6>0).length,dn=Y.length-up;
+    $('#btMonT').textContent='연도별 수익률';$('#btMonCount').textContent=`플러스로 끝난 해 ${up}`+(dn?` · 마이너스로 끝난 해 ${dn}`:'')+' · 막대를 누르면 그 해를 달마다 봅니다';
+    $('#btLeg').hidden=true;$('#btTblSum').textContent='연도별 표 펼치기';
+    $('#btTh').innerHTML='<tr><th>연도</th><th class="rt">수익률</th><th class="rt">비트코인 보유</th></tr>';
+    $('#btTb').innerHTML=Y.map(y=>{const pt=partTxtY(y.year);return `<tr><td>${y.year}년${pt?'<small>'+pt+'</small>':''}</td><td class="rt ${y.s6>=0?'gain':'loss'}">${pct(y.s6)}</td><td class="rt ${y.btc>=0?'gain':'loss'}">${pct(y.btc)}</td></tr>`;}).join('');}
+  else{const M=btMonthsOf(BTY),up=M.filter(r=>r.n&&r.ret>0).length,dn=M.filter(r=>r.n&&r.ret<=0).length,fl=M.filter(r=>!r.n).length;
+    const pt=partTxtY(BTY);$('#btMonT').textContent=BTY+'년 달마다'+(pt?' ('+pt+')':'');
+    $('#btMonCount').textContent=`이익 난 달 ${up} · 손실 난 달 ${dn}`+(fl?` · 거래 없는 달 ${fl}`:'');
+    $('#btLeg').hidden=false;$('#btTblSum').textContent=BTY+'년 달마다 표 펼치기';
+    $('#btTh').innerHTML='<tr><th>월</th><th class="rt">거래</th><th class="rt hw">이김·짐</th><th class="rt">월 수익률</th></tr>';
+    $('#btTb').innerHTML=M.map(r=>{const c=btCls(r);return `<tr><td>${+r.m.slice(5,7)}월</td><td class="rt">${r.n}건</td><td class="rt hw">${r.w}·${r.l}</td><td class="rt ${c==='none'?'':c}">${r.n?pct(r.ret):'거래 없음'}</td></tr>`;}).join('');}
   $('#btN').textContent=BT.length;
   drawBt();}
-function drawBt(){if(!BT||$('#vBt').hidden)return;const ys=btYears();
-  barChart($('#btYear'),DATA.yearly.map(y=>{const pt=partTxtY(y.year);return {v:y.s6,c:y.s6>=0?'gain':'loss',sel:y.year===BTY,x:y.year+'년',xn:String(y.year).slice(2),xs:pt?pt.replace('월부터','월~').replace('월까지','월까지'):'',
-    tip:`<b>${y.year}년${pt?' ('+pt+')':''}</b><br>수익률 <span class="num">${pct(y.s6)}</span><br>비트코인 <span class="num">${pct(y.btc)}</span>`};}),
-    {vals:true,vd:1,sub:true,label:'연도별 수익률',onPick:i=>{BTY=ys[i];renderBt();}});
-  barChart($('#btMon'),btMonthsOf(BTY).map(r=>({v:r.ret,c:btCls(r),x:(+r.m.slice(5,7))+'월',xn:String(+r.m.slice(5,7)),
-    tip:`<b>${r.m.slice(0,4)}년 ${+r.m.slice(5,7)}월</b><br>`+(r.n?`거래 ${r.n}건 (이김 ${r.w} · 짐 ${r.l})<br>월 수익률 <span class="num">${pct(r.ret)}</span>`:'거래 없음')})),
-    {vals:true,label:BTY+'년 달마다 수익률'});
-  const ticks=[];BT.forEach((r,i)=>{if(i===0||r.m.slice(5,7)==='01')ticks.push([i,i===0&&r.m.slice(5,7)!=='01'?'':r.m.slice(2,4)+'년']);});
+function drawBt(){if(!BT||$('#vMon').hidden)return;const ys=btYears();
+  if(BTY==='all')barChart($('#btMon'),DATA.yearly.map(y=>{const pt=partTxtY(y.year);return {v:y.s6,c:y.s6>=0?'gain':'loss',x:y.year+'년',xn:String(y.year).slice(2),xs:pt?pt.replace('월부터','월~'):'',
+      tip:`<b>${y.year}년${pt?' ('+pt+')':''}</b><br>수익률 <span class="num">${pct(y.s6)}</span><br>비트코인 <span class="num">${pct(y.btc)}</span>`};}),
+      {vals:true,vd:1,sub:true,label:'연도별 수익률',onPick:i=>{BTY=ys[i];renderBt();}});
+  else barChart($('#btMon'),btMonthsOf(BTY).map(r=>({v:r.ret,c:btCls(r),x:(+r.m.slice(5,7))+'월',xn:String(+r.m.slice(5,7)),
+      tip:`<b>${r.m.slice(0,4)}년 ${+r.m.slice(5,7)}월</b><br>`+(r.n?`거래 ${r.n}건 (이김 ${r.w} · 짐 ${r.l})<br>월 수익률 <span class="num">${pct(r.ret)}</span>`:'거래 없음')})),
+      {vals:true,label:BTY+'년 달마다 수익률'});
+  const ticks=[];BT.forEach((r,i)=>{if(r.m.slice(5,7)==='01')ticks.push([i,r.m.slice(2,4)+($('#btStrip').clientWidth>520?'년':'')]);});
   barChart($('#btStrip'),BT.map(r=>({v:r.ret,c:!r.n?'none':r.ret>0?(r.top?'top':'soft'):'loss',
     tip:`<b>${r.m.slice(0,4)}년 ${+r.m.slice(5,7)}월</b><br>`+(r.n?`월 수익률 <span class="num">${pct(r.ret)}</span>`+(r.top?'<br>가장 좋았던 달':''):'거래 없음')})),
-    {gap:.78,maxw:10,ticks:ticks.filter(t=>t[1]),label:'전체 달마다 수익률',h:Math.max(220,Math.min(300,$('#btStrip').clientWidth*.42))});}
-function setSub(s,user){if(s==='bt'&&!BT)s='live';SUB=s;const bt=s==='bt';
-  $('#vLive').hidden=bt;$('#vBt').hidden=!bt;$('#hLive').hidden=bt;$('#hBt').hidden=!bt;
-  $('#subTg').querySelectorAll('[data-sub]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sub===s));
-  if(user){try{history.replaceState(null,'',bt?'#monthly-bt':'#monthly');}catch(e){}}
-  if(bt)renderBt();requestAnimationFrame(drawAll);}
+    {gap:.78,maxw:10,ticks,label:'전체 달마다 수익률',h:Math.max(220,Math.min(300,$('#btStrip').clientWidth*.42))});}
 function drawLiveDD(){if(!LV)return;const L=LV,box=$('#lvDD'),W=box.clientWidth,H=Math.max(230,Math.min(300,W*.48));box.querySelector('svg')?.remove();
   const t0=pdate(L.start_date+' 00:00:00').getTime(),t1=pdate(L.generated_at).getTime();
   const pts=[{t:t0,v:0}].concat(L.equity_steps.map(s=>({t:pdate(s.t).getTime(),v:s.twr})));
@@ -1137,20 +1128,19 @@ function drawLiveDD(){if(!LV)return;const L=LV,box=$('#lvDD'),W=box.clientWidth,
 }
 fetch('live.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).then(L=>renderLive(L,false)).catch(()=>renderLive(SNAP,true)).then(()=>{if(!document.body.classList.contains('editing'))applyCopy();renderStatic();});
 
-function drawAll(){if(!$('#vSum').hidden){drawUW();drawEQ();drawLiveDD();}if(!$('#vMon').hidden){if(SUB==='bt')drawBt();else drawMonthly();}}
+function drawAll(){if(!$('#vSum').hidden){drawUW();drawEQ();drawLiveDD();}if(!$('#vMon').hidden){drawBt();drawMonthly();}}
 /* ---------- 탭: 성과 요약 / 월별 기록 (주소 끝 #monthly 로 바로 열림) ---------- */
 function setTab(t,user){const mon=t==='mon';$('#vSum').hidden=mon;$('#vMon').hidden=!mon;document.body.classList.toggle('tab-mon',mon);
   $('#tabSum').setAttribute('aria-selected',!mon);$('#tabMon').setAttribute('aria-selected',mon);
-  if(user){try{history.replaceState(null,'',mon?(SUB==='bt'?'#monthly-bt':'#monthly'):location.pathname+location.search);}catch(e){}
+  if(user){try{history.replaceState(null,'',mon?'#monthly':location.pathname+location.search);}catch(e){}
     const tb=$('#tabs');if(window.scrollY>tb.offsetTop)window.scrollTo(0,tb.offsetTop);}
   requestAnimationFrame(drawAll);}
 document.querySelectorAll('#tabs [data-tab]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab,true)));
 $('#tabs').addEventListener('keydown',e=>{if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;const nx=$('#tabSum').getAttribute('aria-selected')==='true'?'mon':'sum';setTab(nx,true);(nx==='mon'?$('#tabMon'):$('#tabSum')).focus();});
-$('#subTg').querySelectorAll('[data-sub]').forEach(b=>b.addEventListener('click',()=>setSub(b.dataset.sub,true)));
-if(!BT)$('#subBtBtn').hidden=true;else{const ys=btYears();$('#subBtYrs').textContent=ys[0]+'~'+ys[ys.length-1];}
-function fromHash(){const h=location.hash;if(h==='#monthly'||h==='#monthly-bt'){setTab('mon',false);setSub(h==='#monthly-bt'?'bt':'live',false);}else setTab('sum',false);}
-window.addEventListener('hashchange',fromHash);
-if(location.hash==='#monthly'||location.hash==='#monthly-bt')fromHash();
+if(BT)renderBt();else $('#btWrap').hidden=true;
+const isMonHash=()=>location.hash==='#monthly'||location.hash==='#monthly-bt';
+window.addEventListener('hashchange',()=>setTab(isMonHash()?'mon':'sum',false));
+if(isMonHash())setTab('mon',false);
 $('#yrR').value=HMAX;
 applyLayout(COPY.layout);applyCopy();renderStatic();drawAll();setCap(1e8);filt();
 fetch('copy.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).then(c=>{if(!c||!c.name)return;
