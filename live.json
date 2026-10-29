@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-29 09:01:59",
- "asof": "2026-10-07 21:00:00",
+ "generated_at": "2026-10-30 02:02:45",
+ "asof": "2026-10-30 01:00:00",
  "start_date": "2026-06-19",
  "capital_history": [
   {
@@ -11,7 +11,7 @@
  ],
  "realized_pnl": 451147,
  "twr_pct": 4.5412,
- "open_positions": 0,
+ "open_positions": 1,
  "equity_steps": [
   {
    "t": "2026-06-19 00:00:00",
@@ -721,7 +721,7 @@
   "win_rate": 31.25,
   "avg_trade_pct": 0.6362,
   "max_dd_pct": -1.9677,
-  "max_dd_mtm_pct": -2.9667
+  "max_dd_mtm_pct": -2.9729
  },
  "mtm_since": "2026-09-10",
  "mtm_daily": [
@@ -1024,6 +1024,12 @@
    "eq": 1.045412,
    "eq_min": 1.045412,
    "eq_max": 1.045412
+  },
+  {
+   "d": "2026-10-30",
+   "eq": 1.045344,
+   "eq_min": 1.045344,
+   "eq_max": 1.045344
   }
  ],
  "monthly": [
