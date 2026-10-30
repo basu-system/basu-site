@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-30 09:02:59",
- "asof": "2026-10-30 01:00:00",
+ "generated_at": "2026-10-30 10:03:18",
+ "asof": "2026-10-30 09:00:00",
  "start_date": "2026-06-19",
  "capital_history": [
   {
@@ -9,9 +9,9 @@
    "note": "자동매매 개시"
   }
  ],
- "realized_pnl": 451147,
- "twr_pct": 4.5412,
- "open_positions": 1,
+ "realized_pnl": 406948,
+ "twr_pct": 4.0963,
+ "open_positions": 0,
  "equity_steps": [
   {
    "t": "2026-06-19 00:00:00",
@@ -184,6 +184,10 @@
   {
    "t": "2026-10-07 21:00:00",
    "twr": 4.5412
+  },
+  {
+   "t": "2026-10-30 09:00:00",
+   "twr": 4.0963
   }
  ],
  "trades": [
@@ -714,14 +718,25 @@
    "pnl": -16666,
    "pnl_pct": -1.88,
    "hold": "1일 8시간"
+  },
+  {
+   "sym": "DOGE",
+   "entry_t": "2026-10-30 01:00:00",
+   "entry_p": 108,
+   "exit_t": "2026-10-30 09:00:00",
+   "exit_p": 101,
+   "amount": 628033,
+   "pnl": -44199,
+   "pnl_pct": -6.57,
+   "hold": "8시간"
   }
  ],
  "stats": {
-  "trades": 48,
-  "win_rate": 31.25,
-  "avg_trade_pct": 0.6362,
-  "max_dd_pct": -1.9677,
-  "max_dd_mtm_pct": -3.031
+  "trades": 49,
+  "win_rate": 30.61,
+  "avg_trade_pct": 0.4892,
+  "max_dd_pct": -2.3849,
+  "max_dd_mtm_pct": -3.3796
  },
  "mtm_since": "2026-09-10",
  "mtm_daily": [
@@ -1027,8 +1042,8 @@
   },
   {
    "d": "2026-10-30",
-   "eq": 1.044718,
-   "eq_min": 1.044718,
+   "eq": 1.040963,
+   "eq_min": 1.040963,
    "eq_max": 1.045344
   }
  ],
@@ -1091,12 +1106,12 @@
    "from": "2026-10-01",
    "to": null,
    "in_progress": true,
-   "trades": 6,
+   "trades": 7,
    "wins": 0,
-   "losses": 6,
-   "pnl": -101221,
-   "ret_pct": -0.9651,
-   "cum_pct": 4.5412
+   "losses": 7,
+   "pnl": -145420,
+   "ret_pct": -1.3866,
+   "cum_pct": 4.0963
   }
  ],
  "channel_url": "https://t.me/basu_proof",
