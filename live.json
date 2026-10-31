@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-31 09:03:38",
+ "generated_at": "2026-11-01 00:04:03",
  "asof": "2026-10-30 09:00:00",
  "start_date": "2026-06-19",
  "capital_history": [
@@ -1108,15 +1108,28 @@
   },
   {
    "month": "2026-10",
-   "label": "10월(진행 중)",
+   "label": "10월",
    "from": "2026-10-01",
-   "to": null,
-   "in_progress": true,
+   "to": "2026-10-31",
+   "in_progress": false,
    "trades": 7,
    "wins": 0,
    "losses": 7,
    "pnl": -145420,
    "ret_pct": -1.3866,
+   "cum_pct": 4.0963
+  },
+  {
+   "month": "2026-11",
+   "label": "11월(진행 중)",
+   "from": "2026-11-01",
+   "to": null,
+   "in_progress": true,
+   "trades": 0,
+   "wins": 0,
+   "losses": 0,
+   "pnl": 0,
+   "ret_pct": 0.0,
    "cum_pct": 4.0963
   }
  ],
