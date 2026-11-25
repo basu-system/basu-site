@@ -62,7 +62,7 @@
  "foot2": "측정 조건: 업비트 원화 7종목(BTC, ETH, SOL, XRP, ADA, AVAX, DOGE), 4시간봉, 왕복 수수료 0.1%, {검증시작}부터 {검증끝}까지. 종목마다 자본의 7분의 1을 기준으로, 가격 변동폭(ATR) 대비 1%만 위험에 두도록 수량을 정합니다. 운영자 실계좌 자동주문과 같은 공식입니다.",
  "foot3": "현물만 다루는 전략입니다. 전체 시간의 {대기비율}는 아무 코인도 들고 있지 않고 기다렸고, 자본의 평균 {평균노출}만 시장에 들어가 있었습니다.",
  "foot4": "실계좌 기록은 매일, 검증 기록은 분기마다 갱신됩니다.",
- "live_h2": "지금 실제 계좌로 돌아가고 있습니다<br><span class=\"s-sm\"><span class=\"s-sm\"><span class=\"s-lg\"><span class=\"s-sm\"><span class=\"s-md\"><span class=\"s-sm\"><span class=\"s-lg\">(투입금액 9,934,603원) <span class=\"s-sm\"><span class=\"s-sm\"><span class=\"c-gray\">(2026/6/19부터)</span></span></span></span></span></span></span></span></span></span>",
+ "live_h2": "지금 실제 계좌로 돌아가고 있습니다<br><span class=\"s-sm\"><span class=\"s-sm\"><span class=\"s-lg\"><span class=\"s-sm\"><span class=\"s-md\"><span class=\"s-sm\"><span class=\"s-lg\">{투입금액} <span class=\"s-sm\"><span class=\"s-sm\"><span class=\"c-gray\">(2026/6/19부터)</span></span></span></span></span></span></span></span></span></span>",
  "live_lead": "",
  "live_k1": "실현 누적 수익률",
  "live_k1s": "팔아서 확정된 손익 기준",
